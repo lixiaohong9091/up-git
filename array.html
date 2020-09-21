@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>array</h1>
+  <script>
+    
+    // splice
+
+     let arr1 = ['a','b','c'];
+     // arr1.splice(1,0,'d','e');  //["a", "d", "e", "b", "c"]
+     // arr1.splice(1,1,'d','e');  // ["a", "d", "e", "c"]
+     // arr1.splice(-1,1,'d','e'); // ["a", "b", "d", "e"]
+     //console.log(arr1);
+
+     Array.prototype.spliceN = function(start,delN,...list){
+       if(start<0){
+        start=this.length-delN;
+       }
+       let end = start+delN;
+       let headList = this.slice(0,start);
+       let endList  = this.slice(end);
+       let allList = headList.concat(list).concat(endList)
+       return allList
+     }
+
+    let s =  arr1.spliceN(1,1,'d');
+
+    // console.log(s);
+
+    // 数组flat
+
+    let ary = [1, [2, [3, [4, 5]]], 6]; 
+    // 递归
+    let result =[];
+    let flat = (ary)=>{
+       
+       ary.map((item)=>{
+           if(Array.isArray(item)){
+            flat(item)
+           }else{
+            result.push(item)
+           };
+       })
+       return result;
+       
+    }
+    flat(ary);
+    // 
+     
+     let flatN = (ary)=>{
+      return ary.reduce((pre, cur,index,obj,) => {
+        return  pre+cur
+         
+        })
+     }
+
+     // console.log(flatN([9,2,3]))
+
+     let flatF = (ary)=>{
+      let nary = ary.join(',').split(',').map(item=>Number(item)); 
+      console.log(nary);
+     }
+
+     // flatF(ary);
+    // 对象合并  深拷贝 浅拷贝
+     let obj1 = {name:'xiaoming',age:'3',a:{name:'tiantitian'}};
+     let obj2 = {tel:'123456'};
+     let assObj = Object.assign({},obj1,obj2)
+     obj1.name = 'xiaoming2';
+     obj1.a.name = 'tiantian2';
+     // console.log(obj1.name)  //  'xiaoming2';
+     // console.log(obj1.a.name) // 'tiantian2';
+     // console.log(assObj.name) // 'xiaoming'; 一级对象为深拷贝
+     // console.log(assObj.a.name) // 'tiantian2'; 二级对象为前拷贝
+     // 浅拷贝(只拷贝指针，堆内存没拷贝)
+     let a = {num:1};
+     let b = a; 
+     // 深拷贝(拷贝指针，堆内存)
+     let c = JSON.parse(JSON.stringify(a))
+     b.num = 2;
+    // console.log(a.num) // 2 
+    // console.log(b.num) // 2 
+    // console.log(c.num) // 1
+
+    // promise
+
+    let p1 = new Promise(function(result,reject){
+
+      setTimeout(()=>{
+        result()
+      },1000)
+        
+    });
+    //  p1.then(()=>{console.log(11)})
+    // console.log(p1);
+    
+
+    // console.log(['1', '2', '3'].map(parseInt)) //  [1, NaN, NaN]
+    // parseInt(1,0) parseInt(2,1) parseInt(3,2)  parseInt的参数第一个的是数，第二个是进制，0时进制为10
+
+    for (var i = 0; i< 10; i++){
+        setTimeout(() => {
+          console.log(i);
+          }, 1000)
+      }
+
+      var b = 10;
+      (function a(){
+          a = 20;
+          console.log(a); 
+      })();
+  </script>
+</body>
+</html>

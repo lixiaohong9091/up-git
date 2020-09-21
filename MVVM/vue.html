@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue-todolist</title>
+  <script src="./vue.js"></script>
+
+</head>
+<body>
+  <div id='app'>
+    <div>
+      <input v-model ="title" />
+      <button v-on:click = "add">添加</button>
+    </div>
+    <div>
+      <ul>
+        <li v-for="item in list">{{item}}</li>
+      </ul>
+    </div>
+    <div>
+      <p>
+        {{name}}
+      </p>
+      <p>
+        {{age}}
+      </p>
+    </div>
+
+    <div>
+      <p>object.defineProperty</p>
+      <p>vue</p>
+    </div>
+
+  </div> 
+  
+  <script type="text/javascript">
+     var vm = new Vue({
+       el:'#app',
+       data:{
+        title:'',
+        list:[],
+        name:'zhangsan',
+        age:20
+       },
+       methods:{
+         add:function(){
+           this.list.push(this.title);
+           this.title = ''
+         }
+       }
+
+     })
+
+     var obj = {
+       
+     }
+
+     var _name = 'zhangsan'
+
+     console.log(obj)
+
+     Object.defineProperty(obj,'name',{
+       get:function(){
+          console.log('get',_name)
+          return _name
+       },
+       set:function(newValue){
+          console.log('set',newValue)
+          _name = newValue
+       }
+     })
+
+     // 模拟
+
+     var vm2 = {};
+
+     var data2 = {
+       name: 'zhangsan',
+       age:25
+     };
+
+    var key , value ;
+    for (key in data2) {
+       (function(key){
+         console.log(key,data2[key])
+         Object.defineProperty(vm2 , key , {
+           get:function(){
+             console.log('get',data2[key])
+             return  data2[key]
+           },
+           set:function(newVal){
+            console.log('set', newVal)
+            data2[key] = newVal
+           }
+         })
+       })(key)
+    }
+
+    var obja = {
+      name:'zhangsan',
+      age:25,
+      getAddrress:function(){
+        alert('beijing')
+      }
+    };
+   var  fn1 =  ()=>{
+     with(obja){
+      alert(name);
+      alert(age);
+      getAddrress()
+     }
+      // alert(obja.name);
+      // alert(obja.age);
+      // obja.getAddrress()
+   }
+  //  fn1()
+
+  // 手写render函数
+
+  let render = () =>{
+      with(this){ // this就是vm
+        return  _c(
+                    'div',
+                    {
+                      atrrs :{'id':'app'}
+                    },
+                    [
+                      _c(
+                        'p',
+                        [_v(_s(item))]
+                        )
+                    ]
+                    
+                  )
+
+      }
+  }
+  </script>
+</body>
+</html>

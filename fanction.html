@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id='shake'>
+    防抖
+  </div>
+  <div id='throttle'>
+    节流
+  </div>
+  
+</body>
+<script>
+   let num = 1;
+    let content = document.getElementById('shake');
+    let throttle = document.getElementById('throttle');
+    let  timeout;
+    let  callNow = true;
+    countO = ()=>{
+      content.innerHTML = num++;
+    }
+    countT = ()=>{
+      throttle.innerHTML = num++;
+    }
+    function count() {
+         
+        if(timeout){
+          clearTimeout(timeout);
+          callNow = false;
+        }
+        
+        timeout = setTimeout(() => {
+          callNow = true;
+          timeout = null
+          }, 1000);
+
+          console.log(callNow);
+          console.log(timeout);
+        if(callNow){
+          content.innerHTML = num++;
+        }  
+    };
+    
+      function debounce(func, wait) {
+          let timeout;
+          return function () {
+              let context = this;
+              let args = arguments;
+              console.log(timeout);
+              if (timeout) clearTimeout(timeout);
+              
+              timeout = setTimeout(() => {
+                  func.apply(context, args)
+              }, wait);
+          }
+      }
+
+      function debounceK(func,wait) {
+          let timeout;
+          return function () {
+              let context = this;
+              let args = arguments;
+
+              if (timeout) clearTimeout(timeout);
+
+              let callNow = !timeout;
+              timeout = setTimeout(() => {
+                  timeout = null;
+              }, wait)
+
+              if (callNow) func.apply(context, args)
+          }
+      }
+
+      function debounceJ(func,wait) {
+          let callNow = true;
+          return function () {
+              let context = this;
+              let args = arguments;
+              if (callNow) {
+                func.apply(context, args)
+                callNow = false;
+                setTimeout(()=>{
+                  callNow = true;
+                },wait)
+              };  
+          }
+      }
+
+  content.onclick = debounce(count,2000);
+  throttle.onclick= debounceJ(countT,2000);
+
+  var a = [1,2,3,4,5,6];
+  for(var i=0;i<a.length-1;i++){
+    var bb = function(){
+      var b = i;
+      setTimeout(()=>{
+        (function(){
+          console.log(b)
+        })()  
+      },100)
+     
+    }
+     bb()  
+  }
+
+  for(var i=0;i<a.length-1;i++){
+      var b = i;
+      setTimeout(()=>{
+        (function(){
+          console.log(b)
+        })()  
+      },100)
+      
+  }
+
+  sort = (arr)=>{
+    for(let i = 0; i<arr.length;i++){
+      for(let j=0;j <arr.length-i;j++){
+         if(arr[j]>arr[j+1]){
+            // let temp =arr[j];
+            // arr[j] = arr[j+1];
+            // arr[j+1] = temp;
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]] 
+         }   
+      }
+    }
+     return arr;
+  };
+  arr1 = [0,12,23,14,9,8,123];
+  arr2 = [2,3,4,5,2,2,3,5];
+  numObj = (arr)=>{
+     let obj ={};
+     arr.map((item)=>{
+       console.log(item);
+       if(obj[item]){
+        obj[item]++
+       }else{
+        obj[item]=1
+       }
+     })
+     return obj;
+  }
+  // console.log(sort(arr1));
+  console.log(numObj(arr2));
+</script>
+</html>
